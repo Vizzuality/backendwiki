@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  docnado-local:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      labels:
+        com.vizzuality.description: "The Vizzuality Backend Wiki"
+        com.vizzuality.contact: "hello@vizzuality.com"
+        com.vizzuality.responsible: "The backend team"
+    volumes:
+      - "./docs/:/opt/docnado/docs"
+    network_mode: host
+    command: ["--host", "0.0.0.0"]
+  docnado-build:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - "./docs/:/opt/docnado/docs"
+      - "./build/:/opt/docnado/build"
+    network_mode: host
+    command: ["--html", "/opt/docnado/build"]
+  docnado-gen:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - "./docs/:/opt/docnado/docs"
+      - "./build/:/opt/docnado/build"
+    network_mode: host
+    command: ["--new"]
